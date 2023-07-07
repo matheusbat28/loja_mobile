@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loja/apis.dart';
 import 'package:loja/viewProducts.dart';
+import 'package:loja/viewProductsInCategory.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -334,17 +335,24 @@ class _CategoriaState extends State<Categoria> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: GestureDetector(
-        child: ListView.builder(
-          itemCount: dados.length, // Número de itens na lista
-          itemBuilder: (context, index) {
-            return ListTile(
+      child: ListView.builder(
+        itemCount: dados.length, // Número de itens na lista
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          ViewProductsInCategory(category: dados[index])));
+            },
+            child: ListTile(
               title: Text(dados[index]),
               trailing: Icon(Icons.open_in_new),
               leading: Icon(Icons.category_outlined),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }
