@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja/apis.dart';
+import 'package:loja/viewProducts.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -63,7 +64,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   TextEditingController _search = TextEditingController();
-  String value_search = 'Laptop';
+  String value_search = '';
   List<dynamic> dados = [];
 
   @override
@@ -273,12 +274,21 @@ class _HomeState extends State<Home> {
           ]),
         ),
         Expanded(
-          child: GestureDetector(
-            child: ListView.builder(
-              itemCount: dados.length, // Número de itens na lista
-              itemBuilder: (context, index) {
-                final products = dados[index];
-                return ListTile(
+          child: ListView.builder(
+            itemCount: dados.length, // Número de itens na lista
+            itemBuilder: (context, index) {
+              final products = dados[index];
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ViewProducts(
+                                id: products['id'],
+                                url_img: products['thumbnail'],
+                              )));
+                },
+                child: ListTile(
                   title: Text(products['title']),
                   trailing: Icon(Icons.description_outlined),
                   leading: Image.network(
@@ -286,9 +296,9 @@ class _HomeState extends State<Home> {
                     width: 80,
                     fit: BoxFit.cover,
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         )
       ],
@@ -331,6 +341,7 @@ class _CategoriaState extends State<Categoria> {
             return ListTile(
               title: Text(dados[index]),
               trailing: Icon(Icons.open_in_new),
+              leading: Icon(Icons.category_outlined),
             );
           },
         ),
